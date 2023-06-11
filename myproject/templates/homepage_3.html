@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>DigiMedia - Creative SEO HTML5 Template</title>
+    <title>Bug-Repoter</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="../static/vendor/bootstrap/css/bootstrap.min.css">
@@ -52,14 +52,14 @@ https://templatemo.com/tm-568-digimedia
       <div class="row">
         <div class="col-lg-8 col-sm-8 col-7">
           <ul class="info">
-            <li><a href="#"><i class="fa fa-envelope"></i>digimedia@company.com</a></li>
-            <li><a href="#"><i class="fa fa-phone"></i>010-020-0340</a></li>
+            <li><a href="https://www.linkedin.com/in/m-shaheer-khan"><i class="fa fa-envelope"></i>BugReporter@company.com</a></li>
+            <li><a href="#"><i class="fa fa-phone"></i>+92304-2458206</a></li>
           </ul>
         </div>
         <div class="col-lg-4 col-sm-4 col-5">
           <ul class="social-media">
             <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+            <li><a href="https://www.linkedin.com/in/ahsan-sajid-1b06a1171"><i class="fa fa-linkedin"></i></a></li>
             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
             <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
           </ul>
@@ -70,22 +70,22 @@ https://templatemo.com/tm-568-digimedia
   <!-- Pre-header End -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.50s" data-wow-delay="0s">
     <div class="container">
       <div class="row">
         <div class="col-12">
           <nav class="main-nav">
             <!-- ***** Logo Start ***** -->
-            <a href="index.html" class="logo">
-              <img src="../static/assets/images/logo-v3.png" alt="">
+            <a href="" class="logo">
+              <img src="../static/assets/images/bugLogo.png" alt="Logo" style="width: 250px; height: auto;">
             </a>
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
             <ul class="nav">
               <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
-              <li class="scroll-to-section"><a href="#about">About</a></li>
-              <li class="scroll-to-section"><a href="#services">Services</a></li>
-              <li class="scroll-to-section"><a href="#portfolio">Projects</a></li>
+              {% comment %} <li class="scroll-to-section"><a href="#about">About</a></li> {% endcomment %}
+              {% comment %} <li class="scroll-to-section"><a href="#services">Services</a></li> {% endcomment %}
+              {% comment %} <li class="scroll-to-section"><a href="#portfolio">Projects</a></li> {% endcomment %}
               <li class="scroll-to-section"><a href="#blog">Blog</a></li>
               <li class="scroll-to-section"><a href="#contact">Contact</a></li> 
               <li class="scroll-to-section"><div class="border-first-button"><a href="#contact">Free Quote</a></div></li> 
@@ -110,9 +110,8 @@ https://templatemo.com/tm-568-digimedia
               <div class="left-content show-up header-text wow fadeInLeft" data-wow-duration="1s" data-wow-delay="1s">
                 <div class="row">
                   <div class="col-lg-12">
-                    <h6>Digital Media Agency</h6>
-                    <h2>We Boost Your Website Traffic</h2>
-                    <p>This template is brought to you by TemplateMo website. Feel free to use this for a commercial purpose. You are not allowed to redistribute the template ZIP file on any other template website. Thank you.</p>
+                    <h1>Welcome to My Bug Reporting System</h1>
+                    <p>This bug reporting system is designed to help you report and track bugs in our software. Your feedback is important to us, and we appreciate your contributions to improving the quality of our products.</p>
                   </div>
                   <div class="col-lg-12">
                     <div class="border-first-button scroll-to-section">
@@ -132,8 +131,8 @@ https://templatemo.com/tm-568-digimedia
       </div>
     </div>
   </div>
-
-  <div id="about" class="about section">
+{% comment %} ****** About Section start ******** {% endcomment %}
+  {% comment %} <div id="about" class="about section">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -213,9 +212,11 @@ https://templatemo.com/tm-568-digimedia
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
+{% comment %} ****** About Section end ******** {% endcomment %}
 
-  <div id="services" class="services section">
+{% comment %} ****** Services Section start ******** {% endcomment %}
+  {% comment %} <div id="services" class="services section">
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
@@ -388,7 +389,8 @@ https://templatemo.com/tm-568-digimedia
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
+{% comment %} ****** Services Section end ******** {% endcomment %}
 
   
   <div id="free-quote" class="free-quote">
@@ -427,7 +429,8 @@ https://templatemo.com/tm-568-digimedia
   </div>
 
 
-  <div id="portfolio" class="our-portfolio section">
+{% comment %} ****** portfolio Section start ******** {% endcomment %}
+  {% comment %} <div id="portfolio" class="our-portfolio section">
     <div class="container">
       <div class="row">
         <div class="col-lg-5">
@@ -512,7 +515,8 @@ https://templatemo.com/tm-568-digimedia
         </div>
       </div>
     </div>
-  </div>
+  </div> {% endcomment %}
+{% comment %} ****** portfolio Section end ******** {% endcomment %}
   
   <div id="blog" class="blog">
     <div class="container">
@@ -524,35 +528,34 @@ https://templatemo.com/tm-568-digimedia
             <div class="line-dec"></div>
           </div>
         </div>
-        <div class="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+        <div class="col-lg-6 show-up wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
           <div class="blog-post">
             <div class="thumb">
-              <a href="#"><img src="../static/assets/images/blog-post-01.jpg" alt=""></a>
+              <a href="#"><img src="../static/assets/images/blogPost01.jpg" alt=""></a>
             </div>
             <div class="down-content">
-              <span class="category">SEO Analysis</span>
+              <span class="category">SEO Bug Analysis</span>
               <span class="date">03 August 2021</span>
-              <a href="#"><h4>Lorem Ipsum Dolor Sit Amet, Consectetur Adelore
-                Eiusmod Tempor Incididunt</h4></a>
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed doers itii eiumod deis tempor incididunt ut labore.</p>
+              <a href="https://www.testdevlab.com/blog/a-manual-testers-guide-to-effective-bug-reporting"><h4>Effective Bug Reporting</h4></a>
+              <p> Streamlining the process of reporting software issues with clear and concise information to facilitate efficient bug tracking and resolution</p>
               <span class="author"><img src="../static/assets/images/author-post.jpg" alt="">By: Andrea Mentuzi</span>
-              <div class="border-first-button"><a href="#">Discover More</a></div>
+              <div class="border-first-button"><a href="https://www.testdevlab.com/blog/a-manual-testers-guide-to-effective-bug-reporting" target="_blank">Discover More</a></div>
             </div>
           </div>
         </div>
-        <div class="col-lg-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.3s">
+        <div class="col-lg-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
           <div class="blog-posts">
             <div class="row">
               <div class="col-lg-12">
                 <div class="post-item">
                   <div class="thumb">
-                    <a href="#"><img src="../static/assets/images/blog-post-02.jpg" alt=""></a>
+                    <a href="#"><img src="../static/assets/images/blogPost02.jpg" alt=""></a>
                   </div>
                   <div class="right-content">
-                    <span class="category">SEO Analysis</span>
+                      <span class="category">Bug knowledge</span>
                     <span class="date">24 September 2021</span>
-                    <a href="#"><h4>Lorem Ipsum Dolor Sit Amei Eiusmod Tempor</h4></a>
-                    <p>Lorem ipsum dolor sit amet, cocteturi adipiscing eliterski.</p>
+                    <a href="#"><h4>Bug follows some way of yoyr brain. </h4></a>
+                    <p>A bug is an error or flaw in software that causes it to behave unexpectedly or produce incorrect results.</p>
                   </div>
                 </div>
               </div>
