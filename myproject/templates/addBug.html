@@ -10,10 +10,6 @@
       background-color: lightgray;
     }
 
-    .form-container {
-      padding-top: 90px; /* Adjust the value as needed */
-    }
-
     .form-wrapper {
       display: flex;
       justify-content: center;
@@ -22,29 +18,12 @@
       padding: 120px;
     }
 
-    .card {
-      background-color: #f5f5f5; /* Replace with your desired 3D background color */
-      padding: 30px; /* Increase or decrease the value as needed */
-      border-radius: 10px;
-      width: 80%; /* Adjust the width as needed */
-      max-width: 1200px; /* Add a max-width if desired */
-      box-sizing: border-box;
-      margin: 0 auto;
-     
-      }
-
-
-      
-    
-
   </style>
 </head>
 
 <body>
- 
-{% comment %} <div class="form-container"> {% endcomment %}
+
       <div class="form-wrapper">
-      {% comment %} <div class="card"> {% endcomment %}
             <div class="card-body">
               <h4 class="card-title">Bug Report Form</h4>
               <p class="card-description">Please fill in the details below to report a bug</p>
@@ -57,14 +36,22 @@
                   <label for="exampleInputBugReporter">Bug Reporter</label>
                   <input type="text" class="form-control" id="exampleInputBugReporter" placeholder="Bug Reporter" required>
                 </div>
-                <!-- Add margin-bottom to create a gap between fields -->
-                <div class="form-group" style="margin-bottom: 20px;">
+                <div class="form-group">
                   <label for="exampleInputBugType">Bug Type</label>
                   <select class="form-control" id="exampleInputBugType" required>
                     <option value="">Select Bug Type</option>
-                    <!-- Add more bug types as needed -->
+                    <option value="UI Bug">UI Bug</option>
+                    <option value="Functional Bug">Functional Bug</option>
+                    <option value="Performance Bug">Performance Bug</option>
+                    <option value="Compatibility Bug">Compatibility Bug</option>
+                    <option value="Security Bug">Security Bug</option>
+                    <option value="Data Bug">Data Bug</option>
+                    <option value="Integration Bug">Integration Bug</option>
+                    <option value="Usability Bug">Usability Bug</option>
+                    <option value="Accessibility Bug">Accessibility Bug</option>
                   </select>
                 </div>
+                
                 <div class="form-group">
                   <label for="exampleInputBugDescription">Bug Description</label>
                   <textarea class="form-control" id="exampleInputBugDescription" rows="4" placeholder="Bug Description" required></textarea>
@@ -87,9 +74,8 @@
                 </div>
               </form>
             </div>
-          {% comment %} </div> {% endcomment %}
       </div>   
-{% comment %} </div> {% endcomment %}
+
 
 </body>
 
