@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+<style>
+    .row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -20px;
+    margin-left: -20px;
+}
+
+
+
+</style>
+
+<br><br>
+<br><br>
+<br><br>
+
+<div class="container">
+
+<div class="row">
+    <div class="col-md-4 stretch-card grid-margin">
+      <div class="card bg-gradient-danger card-img-holder text-white">
+        <!-- <div class="card-body" style="background-color:#4e4376"> -->
+            <div class="card-body" style="background-color:#4e4376;border-radius: 5px;">
+
+            
+          <h4 class="font-weight-normal mb-3">Weekly Sales <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+          </h4>
+          <h2 class="mb-5">$ 15,0000</h2>
+          <h6 class="card-text">Increased by 60%</h6>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 stretch-card grid-margin">
+      <div class="card bg-gradient-info card-img-holder text-white">
+        <div class="card-body" style="background-color: #5aab92;border-radius: 5px;">
+          <h4 class="font-weight-normal mb-3">Weekly Orders <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+          </h4>
+          <h2 class="mb-5">45,6334</h2>
+          <h6 class="card-text">Decreased by 10%</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 stretch-card grid-margin">
+      <div class="card bg-gradient-success card-img-holder text-white">
+        <div class="card-body" style="background-color: #46aef7;border-radius: 5px;">
+          <!-- <img src="assets/images/dashboard/circle.svg" class="card-img-absolute" > -->
+          <h4 class="font-weight-normal mb-3">Visitors Online <i class="mdi mdi-diamond mdi-24px float-right"></i>
+          </h4>
+          <h2 class="mb-5">95,5741</h2>
+          <h6 class="card-text">Increased by 5%</h6>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <br><br>
+  
+  
+    <table class="table table-striped my-4">
+        <h4 class="card-title">Bordered table</h4>
+        <p class="card-description"> Add class <code>.table-bordered</code>
+        </p>
+      <thead>
+        <tr>
+          <th> User </th>
+          <th> First name </th>
+          <th> Progress </th>
+          <th> Amount </th>
+          <th> Deadline </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1213</td>
+          <td> Herman Beck </td>
+          <td>
+            <!-- <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+          </td>
+          <td> $ 77.99 </td>
+          <td> May 15, 2015 </td>
+        </tr>
+        <tr>
+            <td>2213</td>
+
+          <td> Messsy Adam </td>
+          <td>
+            <!-- <div class="progress">
+              <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+          </td>
+          <td> $245.30 </td>
+          <td> July 1, 2015 </td>
+        </tr>
+        <tr>
+            <td>1513</td>
+
+          <td> John Richards </td>
+          <td>
+            <!-- <div class="progress">
+              <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+          </td>
+          <td> $138.00 </td>
+          <td> Apr 12, 2015 </td>
+        </tr>
+        <tr>
+            <td>4213</td>
+
+          <td> Peter Meggik </td>
+          <td>
+            <!-- <div class="progress">
+              <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+          </td>
+          <td> $ 77.99 </td>
+          <td> May 15, 2015 </td>
+        </tr>
+        <tr>
+            <td>6213</td>
+
+          <td> Edward </td>
+          <td>
+            <!-- <div class="progress">
+              <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+          </td>
+          <td> $ 160.25 </td>
+          <td> May 03, 2015 </td>
+        </tr>
+        <tr>
+            <td>1263</td>
+
+          <td> John Doe </td>
+          <td>
+            <!-- <div class="progress">
+              <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+          </td>
+          <td> $ 123.21 </td>
+          <td> April 05, 2015 </td>
+        </tr>
+        <tr>
+            <td>6213</td>
+
+          <td> Henry Tom </td>
+          <td>
+            <!-- <div class="progress">
+              <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+            </div> -->
+          </td>
+          <td> $ 150.00 </td>
+          <td> June 16, 2015 </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  
+
+</div>
+
+
+
+
+
+{% endblock %}
