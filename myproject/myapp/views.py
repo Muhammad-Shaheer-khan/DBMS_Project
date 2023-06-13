@@ -6,3 +6,7 @@ def home(request):
 # Create your views here.
 def addBug(request):
     return render(request,'addBug.html')
+
+
+def record(request):
+    return render(request,'record.html')

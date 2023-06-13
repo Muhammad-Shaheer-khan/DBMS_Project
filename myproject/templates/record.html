@@ -1,0 +1,281 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+<!-- CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+
+</head>
+
+<style>
+    .row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -20px;
+    margin-left: -20px;
+}
+
+
+<!-- progress bar -->
+
+  .progress {
+    height: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    background-color: #f5f5f5;
+  }
+
+  .progress-bar {
+    height: 100%;
+  }
+
+  .bg-success {
+    background-color: #28a745;
+  }
+
+  .bg-danger {
+    background-color: #dc3545;
+  }
+
+  .highlight-icon {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    font-size: 1.5rem; /* Adjust the font size as needed */
+    color: #000000; /* Set the highlight color */
+  }
+
+  .highlight-icon {
+    color: black;
+    transition: color 0.3s;
+  }
+  
+  .highlight-icon:hover {
+    color: blue;
+  }
+
+  .icon-trash,
+  .icon-edit {
+    color: black;
+    transition: color 0.3s;
+  }
+  
+  .icon-trash:hover {
+    color: red;
+  }
+  
+  .icon-edit:hover {
+    color: blue;
+  }
+  
+  
+</style>
+
+<br><br>
+<br><br>
+<br><br>
+
+<div class="container">
+
+<div class="row">
+    <div class="col-md-4 stretch-card grid-margin">
+      <div class="card bg-gradient-danger card-img-holder text-white">
+            <div class="card-body" style="background-color:#4e4376;border-radius: 5px;">
+
+            
+          <h4 class="font-weight-normal mb-3">No. of Reporters <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+          </h4>
+          <h5 class="mb-5">(count in no.)</h5>
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-md-4 stretch-card grid-margin">
+      <div class="card bg-gradient-info card-img-holder text-white">
+        <div class="card-body" style="background-color: #5aab92;border-radius: 5px;">
+          <h4 class="font-weight-normal mb-3">Bugs count<i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+          </h4>
+          <h5 class="mb-5">(count in no.)</h5>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 stretch-card grid-margin">
+      <div class="card bg-gradient-success card-img-holder text-white">
+        <div class="card-body" style="background-color: #46aef7;border-radius: 5px;">
+          <h4 class="font-weight-normal mb-3">Reported bugs <i class="mdi mdi-diamond mdi-24px float-right"></i>
+          </h4>
+          <h5 class="mb-5">(No. of repoted bugs)</h5>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <br><br>
+  
+  
+    <table class="table table-striped my-4">
+        <h4 class="card-title">Records</h4>
+      <thead>
+        <tr>
+          <th> Bug no </th>
+          <th> Bug Reporter</th>
+          <th> Bug type</th>
+          <th> Bug Reporting site</th>
+          <th> Owner Email</th>
+          <th> More detail</th>
+          <th> Edit | Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1213</td>
+          <td> Herman Beck </td>
+          <td> Functional </td>
+          <td> May kio batao </td>
+          <td> May 15, 2015 </td>
+          <td>
+            <a href="#" data-toggle="modal" data-target="#bugDetailModal">
+              <div class="highlight-icon">
+                <i class="bi bi-arrow-bar-right"></i>
+              </div>
+            </a>
+          </td>
+        
+          <td>
+            <div class="highlight-icon">
+              
+              <a href="#" data-toggle="modal" data-target="#editBugModal">
+                <i class="bi bi-pencil icon-edit"></i>
+              </a>
+              <span class="icon-separator"> | </span>
+              <a href="#" data-toggle="modal" data-target="#deleteBugModal">
+                <i class="bi bi-trash icon-trash"></i>
+              </a>
+            </div>
+          </td>
+          
+          
+          
+        
+      </tbody>
+    </table>
+
+
+
+
+    <br><br><br>
+
+
+
+
+    <table class="table table-striped my-4">
+      <h4 class="card-title">Reporter's <code>Progress</code></h4>
+    <thead>
+      <tr>
+        <th> Reporter name </th>
+        <th> Progress </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td> Herman Beck </td>
+        <td>
+          {% comment %} <div class="progress">
+            <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> {% endcomment %}
+        </td>
+      </tr>  
+      <tr>
+        <td> Messsy Adam </td>
+        <td>
+         {% comment %} <div class="progress">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> {% endcomment %}
+        </td>
+      </tr>
+      {% comment %} <tr>
+        <td> John Richards </td>
+        <td>
+          <!-- <div class="progress">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> -->
+        </td>
+        <td> $138.00 </td>
+        <td> Apr 12, 2015 </td>
+      </tr>
+      <tr>
+          <td>4213</td>
+
+        <td> Peter Meggik </td>
+        <td>
+          <!-- <div class="progress">
+            <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> -->
+        </td>
+        <td> $ 77.99 </td>
+        <td> May 15, 2015 </td>
+      </tr>
+      <tr>
+          <td>6213</td>
+
+        <td> Edward </td>
+        <td>
+          <!-- <div class="progress">
+            <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> -->
+        </td>
+        <td> $ 160.25 </td>
+        <td> May 03, 2015 </td>
+      </tr>
+      <tr>
+          <td>1263</td>
+
+        <td> John Doe </td>
+        <td>
+          <!-- <div class="progress">
+            <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> -->
+        </td>
+        <td> $ 123.21 </td>
+        <td> April 05, 2015 </td>
+      </tr>
+      <tr>
+          <td>6213</td>
+
+        <td> Henry Tom </td>
+        <td>
+          <!-- <div class="progress">
+            <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+          </div> -->
+        </td>
+        <td> $ 150.00 </td>
+        <td> June 16, 2015 </td>
+      </tr> {% endcomment %}
+    </tbody>
+  </table>
+
+
+
+
+  </div>
+
+
+  
+  
+
+</div>
+
+
+
+
+
+{% endblock %}
