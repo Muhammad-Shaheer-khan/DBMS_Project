@@ -25,7 +25,6 @@
 }
 
 
-<!-- progress bar -->
 
   .progress {
     height: 10px;
@@ -54,16 +53,16 @@
     color: #000000; /* Set the highlight color */
   }
 
-  .highlight-icon {
+  /* .highlight-icon {
     color: black;
     transition: color 0.3s;
   }
   
   .highlight-icon:hover {
-    color: blue;
-  }
+    color: rgb(141, 141, 149);
+  } */
 
-  .icon-trash,
+  /* .icon-trash,
   .icon-edit {
     color: black;
     transition: color 0.3s;
@@ -74,9 +73,9 @@
   }
   
   .icon-edit:hover {
-    color: blue;
+    color: rgb(193, 193, 203);
   }
-  
+   */
   
 </style>
 
@@ -129,39 +128,43 @@
           <th> Bug no </th>
           <th> Bug Reporter</th>
           <th> Bug type</th>
-          <th> Bug Reporting site</th>
           <th> Owner Email</th>
-          <th> More detail</th>
-          <th> Edit | Delete</th>
+          <th> Porgress</th>
+          
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1213</td>
-          <td> Herman Beck </td>
-          <td> Functional </td>
-          <td> May kio batao </td>
-          <td> May 15, 2015 </td>
-          <td>
-            <a href="#" data-toggle="modal" data-target="#bugDetailModal">
-              <div class="highlight-icon">
-                <i class="bi bi-arrow-bar-right"></i>
-              </div>
-            </a>
-          </td>
+        {% for i in record %}
         
+        <tr>
+          <td>{{i.ReporterID}}</td>
+          <td>{{i.ReporterName}} </td>
+          <td>{{ i.BugType}} </td>
+          <td>{{i.OwnerEmail}} </td>
+          <td></td>
+          <!-- <td style="background-color: forestgreen; width: 2px;font-size: 12px;" >In Progress</td> -->
           <td>
             <div class="highlight-icon">
               
-              <a href="#" data-toggle="modal" data-target="#editBugModal">
-                <i class="bi bi-pencil icon-edit"></i>
+              <a href="#" data-toggle="modal" data-target="#editBugModal" style="margin:auto;">
+                <i class="fas fa-pencil-alt" style="color:#0d6efd;"  style="margin-right: 16px;" ></i>
+                <i class="fa fa-trash"  style="margin-left: 10px;"></i>
+                <i class="bi bi-three-dots"  style="margin-left: 10px;"></i>
+
               </a>
-              <span class="icon-separator"> | </span>
-              <a href="#" data-toggle="modal" data-target="#deleteBugModal">
-                <i class="bi bi-trash icon-trash"></i>
-              </a>
-            </div>
+             
           </td>
+        </tr>
+
+        {% endfor %}
+         
+        
+          
+          <!-- <a href="#" data-toggle="modal" data-target="#bugDetailModal">
+            <div class="highlight-icon">
+              <i class="bi bi-arrow-bar-right"></i>
+            </div>
+          </a> -->
           
           
           
@@ -177,7 +180,7 @@
 
 
 
-    <table class="table table-striped my-4">
+    <!-- <table class="table table-striped my-4">
       <h4 class="card-title">Reporter's <code>Progress</code></h4>
     <thead>
       <tr>
@@ -208,7 +211,7 @@
           <!-- <div class="progress">
             <div class="progress-bar bg-warning" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
           </div> -->
-        </td>
+        <!-- </td>
         <td> $138.00 </td>
         <td> Apr 12, 2015 </td>
       </tr>
@@ -220,7 +223,7 @@
           <!-- <div class="progress">
             <div class="progress-bar bg-primary" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
           </div> -->
-        </td>
+        <!-- </td>
         <td> $ 77.99 </td>
         <td> May 15, 2015 </td>
       </tr>
@@ -232,36 +235,36 @@
           <!-- <div class="progress">
             <div class="progress-bar bg-danger" role="progressbar" style="width: 35%" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100"></div>
           </div> -->
-        </td>
+        <!-- </td>
         <td> $ 160.25 </td>
         <td> May 03, 2015 </td>
       </tr>
       <tr>
           <td>1263</td>
 
-        <td> John Doe </td>
-        <td>
+        <td> John Doe </td> -->
+        <!-- <td>
           <!-- <div class="progress">
             <div class="progress-bar bg-info" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
           </div> -->
-        </td>
+        <!-- </td>
         <td> $ 123.21 </td>
         <td> April 05, 2015 </td>
-      </tr>
-      <tr>
+      </tr> --> 
+      <!-- <tr>
           <td>6213</td>
 
         <td> Henry Tom </td>
-        <td>
+        <td> -->
           <!-- <div class="progress">
             <div class="progress-bar bg-warning" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
           </div> -->
-        </td>
+        <!-- </td>
         <td> $ 150.00 </td>
         <td> June 16, 2015 </td>
       </tr> {% endcomment %}
     </tbody>
-  </table>
+  </table> --> 
 
 
 
