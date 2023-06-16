@@ -7,9 +7,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 <!-- CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css">
+
 
 <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 </head>
 
@@ -49,33 +56,56 @@
     display: flex;
     justify-content: left;
     align-items: left;
-    font-size: 1.5rem; /* Adjust the font size as needed */
-    color: #000000; /* Set the highlight color */
-  }
-
-  /* .highlight-icon {
-    color: black;
-    transition: color 0.3s;
+    font-size: 1.5rem; 
+    color: #000000;
   }
   
-  .highlight-icon:hover {
-    color: rgb(141, 141, 149);
-  } */
-
-  /* .icon-trash,
-  .icon-edit {
-    color: black;
-    transition: color 0.3s;
+  .edit-icon:hover {
+    color: blue;
   }
   
-  .icon-trash:hover {
+  .delete-icon:hover {
     color: red;
   }
-  
-  .icon-edit:hover {
-    color: rgb(193, 193, 203);
+  .highlighted-text {
+    background-color: #FAFAFA;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
   }
-   */
+  
+  .highlighted-text p {
+    margin: 0;
+  }
+  
+  .highlighted-text p:first-child {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: black; /* Set the color to orange */
+  }
+  
+  .highlighted-text a {
+    word-break: break-all;
+    color: black; /* Set the color to orange */
+  }
+  
+  .highlighted-text a:hover {
+    text-decoration: underline;
+  }
+    
+  .black-text {
+    color: black;
+  }
+  
+
+  #cancelButton {
+    float: right;
+    background-color: blue;
+    color: white;
+  }
+  
+  
   
 </style>
 
@@ -129,47 +159,110 @@
           <th> Bug Reporter</th>
           <th> Bug type</th>
           <th> Owner Email</th>
-          <th> Porgress</th>
+          <th> More detail</th>
+          <th style="margin-right: 16px;">&nbsp;Edit | Delete</th>
+
+
           
         </tr>
       </thead>
       <tbody>
         {% for i in record %}
-        
         <tr>
-          <td>{{i.ReporterID}}</td>
-          <td>{{i.ReporterName}} </td>
-          <td>{{ i.BugType}} </td>
-          <td>{{i.OwnerEmail}} </td>
-          <td></td>
-          <!-- <td style="background-color: forestgreen; width: 2px;font-size: 12px;" >In Progress</td> -->
+          <td>{{ i.ReporterID }}</td>
+          <td>{{ i.ReporterName }}</td>
+          <td>{{ i.BugType }}</td>
+          <td>{{ i.OwnerEmail }}</td>
           <td>
             <div class="highlight-icon">
-              
-              <a href="#" data-toggle="modal" data-target="#editBugModal" style="margin:auto;">
-                <i class="fas fa-pencil-alt" style="color:#0d6efd;"  style="margin-right: 16px;" ></i>
-                <i class="fa fa-trash"  style="margin-left: 10px;"></i>
-                <i class="bi bi-three-dots"  style="margin-left: 10px;"></i>
+              <a href="#" class="more-detail-button" data-target="#moreDetailModal{{ i.ReporterID }}" style="color:#000000;">
 
+                &nbsp;&nbsp;
+                <i class="bi bi-three-dots"></i>
               </a>
-             
+            </div>
+          </td>
+          <td>
+            <div class="highlight-icon">
+              <a href="#" data-toggle="modal" data-target="#editBugModal{{ i.ReporterID }}" style="color:#000000">
+                <i class="fas fa-pencil-alt edit-icon" style="margin-right: 10px;"></i>
+              </a>
+                &nbsp;|&nbsp;
+
+                <a href="#" onclick="confirmDelete('{{ i.ReporterID }}')" style="color:#000000">
+                  <i class="fas fa-trash delete-icon" style="margin-left: 10px;"></i>
+                </a>
+                
+            </div>
           </td>
         </tr>
+        <script>
+          function confirmDelete(reporterId) {
+            if (confirm("Are you sure you want to delete this record?")) {
+              deleteRecord(reporterId);
+            }
+          }
+        
+          function deleteRecord(reporterId) {
+            // Perform the delete operation using AJAX
+            fetch(`/delete/${reporterId}/`, {
+              method: 'POST',
+              headers: {
+                'X-CSRFToken': getCookie('csrftoken'), // Ensure to include the CSRF token
+                'Content-Type': 'application/json',
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                // Handle the response data or perform any necessary actions after deletion
+                console.log(data);
+                window.location.reload(); // Redirect to the same page
+              })
+              .catch((error) => {
+                // Handle any error that occurred during the request
+                console.error(error);
+              });
+          }
+        
+          // Helper function to retrieve the CSRF token from cookies
+          function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+          }
+        </script>
+                
 
-        {% endfor %}
-         
         
-          
-          <!-- <a href="#" data-toggle="modal" data-target="#bugDetailModal">
-            <div class="highlight-icon">
-              <i class="bi bi-arrow-bar-right"></i>
+        
+
+        <!-- More Detail Modal -->
+        <div class="modal fade" id="moreDetailModal{{ i.ReporterID }}" tabindex="-1" role="dialog" aria-labelledby="moreDetailLabel{{ i.ReporterID }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="moreDetailLabel{{ i.ReporterID }}">More Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="highlighted-text">
+                  <p><strong>Reason:</strong></p>
+                  <p class="reason black-text"><b>{{ i.Reason }}</b></p>
+                </div>
+                <div class="highlighted-text">
+                  <p><strong>Site Link:</strong></p>
+                  <p class="site-link"><b><a href="{{ i.SiteLink }}" target="_blank">{{ i.SiteLink }}</a></b></p>
+                </div>
+                
+                </div>
+              </div>
+              
             </div>
-          </a> -->
-          
-          
-          
+          </div>
+        </div>
         
-      </tbody>
+                
+  {% endfor %}
     </table>
 
 
@@ -266,19 +359,19 @@
     </tbody>
   </table> --> 
 
-
-
-
   </div>
-
-
-  
-  
-
 </div>
 
+<script>
+  $(document).ready(function() {
+    $('.more-detail-button').click(function() {
+      var modalId = $(this).data('target');
+      $(modalId).modal('show');
+    });
+  });
 
+  
 
-
-
+  </script>
+  
 {% endblock %}
