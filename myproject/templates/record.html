@@ -306,7 +306,7 @@
                   </div>
                   <div class="form-group my-1">
                     <label for="exampleInputBugType">Bug Type</label>
-                    <select class="form-control"value="{{i.BugType}}" id="exampleInputBugType" required >
+                    <select class="form-control"value="{{i.BugType}}" id="exampleInputBugType" required name="bugType1" >
 
                       <option {% if i.BugType == 'UI Bug' %}selected{% endif %}>UI Bug</option>
                       <option {% if i.BugType == 'Functional Bug' %}selected{% endif %}>Functional Bug</option>

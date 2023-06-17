@@ -93,13 +93,24 @@
             </a>
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
-            <ul class="nav">
+            <!-- <ul class="nav">
               <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
               <li class="scroll-to-section"><a href="#blog">Blog</a></li>
               <li ><a href="{% url 'addBug' %}">Add bug</a></li>
               <li ><a href="{% url 'record' %}">Records</a></li> 
               <div class="border-first-button"><a href="#">Report Bug</a></div>
-            </ul>        
+            </ul>         -->
+            <ul class="nav">
+              <li class="scroll-to-section{% if request.path == '#top' or request.path == '/' %} active{% endif %}">
+                <a href="#top">Home</a>
+            </li>
+               <!-- <li class="scroll-to-section{% if request.path == '#top' or request.path == '' %} active{% endif %}"><a href=" ">Home</a></li> -->
+              <li class="scroll-to-section{% if request.path == '#blog' %} active{% endif %}"><a href="#blog">Blog</a></li>
+              
+              <li{% if request.path == 'addBug' %} class="active"{% endif %}><a href="{% url 'addBug' %}">Add bug</a></li>
+              <li{% if request.path == 'record' %} class="active"{% endif %}><a href="{% url 'record' %}">Records</a></li>
+              <div class="border-first-button"><a href="#">Report Bug</a></div>
+          </ul>
             <a class='menu-trigger'>
                 <span>Menu</span>
             </a>
