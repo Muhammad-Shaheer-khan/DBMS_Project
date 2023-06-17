@@ -22,30 +22,72 @@ def home(request):
 def addBug(request):
     return render(request,'addBug.html')
 
-@require_http_methods(['POST', 'GET'])
-def delete_record(request, record_id):
+
+@csrf_exempt
+def update_record(request,ReporterID):
+    print(ReporterID)
     if request.method == 'POST':
-        with sqlite3.connect(BASE_DIR / 'data.db') as db:
-            cursor = db.cursor()
-            query = "DELETE FROM Form WHERE ReporterID = ?"
-            cursor.execute(query, (record_id,))
+        reporterName1 = request.POST.get('reporterName1')
+        bugType1 = request.POST.get('bugType1')
+        reason1 = request.POST.get('bugReason1')
+        siteName1 = request.POST.get('siteName1')
+        siteLink1 = request.POST.get('siteLink1')
+        ownerEmail1 = request.POST.get('ownerEmail1')
+        
+        with sqlite3.connect(BASE_DIR/'data.db') as db:
+            cursor=db.cursor()
+            # Update the patient information in the database
+            query = """
+                UPDATE Form
+                SET ReporterName = ?,
+                    BugType = ?,
+                    Reason = ?,
+                    SiteName = ?,
+                    SiteLink = ?,
+                    OwnerEmail = ?
+                WHERE ReporterID = ? 
+            """
+            values = (reporterName1, bugType1, reason1, siteName1, siteLink1, ownerEmail1, ReporterID )
+            cursor.execute(query, values)
+        
+    return redirect('/record')
+    
+    
+def delete_record(request,ReporterID):
+    print(ReporterID)
 
-        return redirect('record')
 
-    else:
-        with sqlite3.connect(BASE_DIR / 'data.db') as db:
-            cursor = db.cursor()
-            query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail FROM Form"
-            cursor.execute(query)
-            row = cursor.fetchall()
-            column_names = [description[0] for description in cursor.description]
 
-        record = []
-        for row in row:
-            r = dict(zip(column_names, row))
-            record.append(r)
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()
+        query = "DELETE FROM Form WHERE ReporterID = ?"
+        cursor.execute(query, (ReporterID,))
+             
+    return redirect('/record')
 
-        return render(request, 'record.html', {'record': record})
+    
+    # if request.method == 'POST':
+    #     with sqlite3.connect(BASE_DIR / 'data.db') as db:
+    #         cursor = db.cursor()
+    #         query = "DELETE FROM Form WHERE ReporterID = ?"
+    #         cursor.execute(query, (record_id,))
+
+    #     return redirect('record')
+
+    # else:
+    #     with sqlite3.connect(BASE_DIR / 'data.db') as db:
+    #         cursor = db.cursor()
+    #         query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail FROM Form"
+    #         cursor.execute(query)
+    #         row = cursor.fetchall()
+    #         column_names = [description[0] for description in cursor.description]
+
+    #     record = []
+    #     for row in row:
+    #         r = dict(zip(column_names, row))
+    #         record.append(r)
+
+    #     return render(request, 'record.html', {'record': record})
 
 def record(request):
     with sqlite3.connect(BASE_DIR / 'data.db') as db:

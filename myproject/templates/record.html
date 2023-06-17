@@ -159,8 +159,8 @@
           <th> Bug Reporter</th>
           <th> Bug type</th>
           <th> Owner Email</th>
-          <th> More detail</th>
-          <th style="margin-right: 16px;">&nbsp;Edit | Delete</th>
+          <th> Progress</th>
+          <!-- <th style="margin-right: 16px;">&nbsp;Edit | Delete</th> -->
 
 
           
@@ -173,6 +173,7 @@
           <td>{{ i.ReporterName }}</td>
           <td>{{ i.BugType }}</td>
           <td>{{ i.OwnerEmail }}</td>
+          <td>dsfsd</td>
           <td>
             <div class="highlight-icon">
               <a href="#" class="more-detail-button" data-target="#moreDetailModal{{ i.ReporterID }}" style="color:#000000;">
@@ -184,28 +185,48 @@
           </td>
           <td>
             <div class="highlight-icon">
-              <a href="#" data-toggle="modal" data-target="#editBugModal{{ i.ReporterID }}" style="color:#000000">
-                <i class="fas fa-pencil-alt edit-icon" style="margin-right: 10px;"></i>
+               <a href="#" class="more-detail-button" data-target="#editBugModal{{ i.ReporterID }}" style="color:#000000">
+                <i class="fas fa-pencil-alt edit-icon" style="margin-right: 20px;"></i>
               </a>
                 &nbsp;|&nbsp;
 
-                <a href="#" onclick="confirmDelete('{{ i.ReporterID }}')" style="color:#000000">
-                  <i class="fas fa-trash delete-icon" style="margin-left: 10px;"></i>
-                </a>
+
+       
+                 
+
+                <!-- <form action="{% url 'delete_record' i.ReporterID %}" ">
+                  <button style="color:#000000" >
+                    <i class="fas fa-trash delete-icon" style="margin-left: 10px;"></i>
+                  </button>
+                </form> -->
+                <!-- <form method="POST" action="{% url  'delete_record' i.ReporterID %}">
+                  {% csrf_token %}
+                  <button class="btn bg-gradient-danger mb-0" type="submit">
+                    <i class="fas fa-trash-alt"></i>&nbsp;&nbsp;Delete Record
+                  </button>
+                </form> -->
+
+                <a href="{% url 'delete_record' i.ReporterID %}" <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                  <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+                </svg></a>
+                 
+                  
                 
             </div>
           </td>
         </tr>
-        <script>
-          function confirmDelete(reporterId) {
+        <!-- <script>
+          function confirmDelete(ReporterID) {
+            console.log(ReporterID)
             if (confirm("Are you sure you want to delete this record?")) {
-              deleteRecord(reporterId);
+              deleteRecord(ReporterID);
             }
           }
         
-          function deleteRecord(reporterId) {
+          function deleteRecord(ReporterID) {
             // Perform the delete operation using AJAX
-            fetch(`/delete/${reporterId}/`, {
+            fetch(`/delete_record/${ReporterID}/`, {
               method: 'POST',
               headers: {
                 'X-CSRFToken': getCookie('csrftoken'), // Ensure to include the CSRF token
@@ -231,13 +252,140 @@
             if (parts.length === 2) return parts.pop().split(';').shift();
           }
         </script>
+         
+      
+
+        
+        
+
+         More Detail Modal -->
+        <!-- <div class="modal fade" id="editBugModal{{ i.ReporterID }}" tabindex="-1" role="dialog" aria-labelledby="moreDetailLabel{{ i.ReporterID }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="moreDetailLabel{{ i.ReporterID }}">More Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="highlighted-text">
+                  <p><strong>Reason:</strong></p>
+                  <p class="reason black-text"><b>{{ i.Reason }}</b></p>
+                </div>
+                <div class="highlighted-text">
+                  <p><strong>Site Link:</strong></p>
+                  <p class="site-link"><b><a href="{{ i.SiteLink }}" target="_blank">{{ i.SiteLink }}</a></b></p>
+                </div>
                 
+                </div>
+              </div>
+              
+            </div>
+          </div>
+        </div> -->
+        <div class="modal fade" id="editBugModal{{ i.ReporterID }}"tabindex="-1" role="dialog" aria-labelledby="moreDetailLabel{{ i.ReporterID }}">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="moreDetailLabel{{ i.ReporterID }}">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form class="forms-sample " action="{% url 'update_record' i.ReporterID %}" method="POST" >
+                  {% csrf_token %}
+
+
+                  <!-- <div class="form-group my-1">
+                    <label for="exampleInputBugNo">Bug Number</label>
+                    <input type="number" class="form-control my-2" id="exampleInputBugNo" name="bugNumber" placeholder="Bug Number" required>
+                  </div> -->
+                  <div class="form-group my-1">
+                    <label for="exampleInputBugReporter"x`>Bug Reporter</label>
+                    <input type="text" class="form-control my-2" name="reporterName1" value="{{i.ReporterName}}" id="exampleInputBugReporter" placeholder="Bug Reporter" required>
+                  </div>
+                  <div class="form-group my-1">
+                    <label for="exampleInputBugType">Bug Type</label>
+                    <select class="form-control name="BugType" id= "exampleInputBugType" required>
+                     
+
+                      <option value="">Select Bug Type</option>
+                      <option value="UI Bug">UI Bug</option>
+                      <option value="Functional Bug">Functional Bug</option>
+                      <option value="Performance Bug">Performance Bug</option>
+                      <option value="Compatibility Bug">Compatibility Bug</option>
+                      <option value="Security Bug">Security Bug</option>
+                      <option value="Data Bug">Data Bug</option>
+                      <option value="Integration Bug">Integration Bug</option>
+                      <option value="Usability Bug">Usability Bug</option>
+                      <option value="Accessibility Bug">Accessibility Bug</option>
+                    </select>
+                  </div>
+                  
+                  
+                  <div class="form-group my-1">
+                    <label for="exampleInputReason">Reason</label>
+                    <input type="text" name="bugReason1" value="{{i.Reason}}" class="form-control my-2" id="exampleInputReason" placeholder="Reason" required>
+                  </div>
+                  <div class="form-group my-1">
+                    <label for="siteName">Site name</label>
+                    <input type="text" name="siteName1"  value="{{i.SiteName}}"class="form-control my-2" id="siteName" placeholder="Site name" required>
+                  </div>
+                  <div class="form-group my-1">
+                    <label for="exampleInputSiteLink">Site Link</label>
+                    <input type="url"  name="siteLink1" class="form-control my-2" value="{{i.SiteLink}}" id="exampleInputSiteLink" placeholder="Site Link" pattern="https?://.+">
+                  </div>
+                  <div class="form-group my-1">
+                    <label for="exampleInputOwnerEmail">Owner Email</label>
+                    <input type="email" name="ownerEmail1" class="form-control" value="{{i.OwnerEmail}}" id="exampleInputOwnerEmail" placeholder="Owner Email" required>
+                  </div>
+            
+                  <div class="form-group text-left mt-3 my-1">
+                    <button type="submit" class="btn btn-primary btn-submit">Submit</button>
+                    <button type="submit"  class="btn btn-light btn-cancel">Cancel</button>
+                  </div>
+                </form>
+                
+                </div>
+              <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
+
 
         
-        
+        <div class="modal fade" id="moreDetailModal{{ i.ReporterID }}" tabindex="-1" role="dialog" aria-labelledby="moreDetailLabel{{ i.ReporterID }}">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="moreDetailLabel{{ i.ReporterID }}">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="highlighted-text">
+                  <p><strong>Reason:</strong></p>
+                  <p class="reason black-text"><b>{{ i.Reason }}</b></p>
+                </div>
+                <div class="highlighted-text">
+                  <p><strong>Site Link:</strong></p>
+                  <p class="site-link"><b><a href="{{ i.SiteLink }}" target="_blank">{{ i.SiteLink }}</a></b></p>
+                </div>
+                
+                </div>
+              <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div> -->
+            </div>
+          </div>
+        </div>
 
-        <!-- More Detail Modal -->
-        <div class="modal fade" id="moreDetailModal{{ i.ReporterID }}" tabindex="-1" role="dialog" aria-labelledby="moreDetailLabel{{ i.ReporterID }}" aria-hidden="true">
+        <!-- <div class="modal fade" id="moreDetailModal{{ i.ReporterID }}" tabindex="-1" role="dialog" aria-labelledby="moreDetailLabel{{ i.ReporterID }}" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -260,7 +408,7 @@
             </div>
           </div>
         </div>
-        
+         -->
                 
   {% endfor %}
     </table>
