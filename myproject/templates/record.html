@@ -306,21 +306,21 @@
                   </div>
                   <div class="form-group my-1">
                     <label for="exampleInputBugType">Bug Type</label>
-                    <select class="form-control name="BugType" id= "exampleInputBugType" required>
-                     
+                    <select class="form-control"value="{{i.BugType}}" id="exampleInputBugType" required >
 
-                      <option value="">Select Bug Type</option>
-                      <option value="UI Bug">UI Bug</option>
-                      <option value="Functional Bug">Functional Bug</option>
-                      <option value="Performance Bug">Performance Bug</option>
-                      <option value="Compatibility Bug">Compatibility Bug</option>
-                      <option value="Security Bug">Security Bug</option>
-                      <option value="Data Bug">Data Bug</option>
-                      <option value="Integration Bug">Integration Bug</option>
-                      <option value="Usability Bug">Usability Bug</option>
-                      <option value="Accessibility Bug">Accessibility Bug</option>
+                      <option {% if i.BugType == 'UI Bug' %}selected{% endif %}>UI Bug</option>
+                      <option {% if i.BugType == 'Functional Bug' %}selected{% endif %}>Functional Bug</option>
+                      <option {% if i.BugType == 'Performance Bug' %}selected{% endif %}>Performance Bug</option>
+                      <option {% if i.BugType == 'Compatibility Bug' %}selected{% endif %}>Compatibility Bug</option>
+                      <option {% if i.BugType == 'Security Bug' %}selected{% endif %}>Security Bug</option>
+                      <option {% if i.BugType == 'Data Bug' %}selected{% endif %}>Data Bug</option>
+                      <option {% if i.BugType == 'Integration Bug' %}selected{% endif %}>Integration Bug</option>
+
+                      <option {% if i.BugType == 'Usability Bug' %}selected{% endif %}>Usability Bug</option>
+                      <option {% if i.BugType == 'Accessibility Bug' %}selected{% endif %}>Accessibility Bug</option>
                     </select>
                   </div>
+                  
                   
                   
                   <div class="form-group my-1">
