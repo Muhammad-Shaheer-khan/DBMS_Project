@@ -1,13 +1,8 @@
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
-from django.views.decorators.http import require_http_methods
-import uuid
-
+from django.views.decorators.csrf import csrf_exempt
 import sqlite3
-import random
-import string
-
+from collections import Counter
+from pathlib import Path
 
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +20,7 @@ def addBug(request):
 
 @csrf_exempt
 def update_record(request,ReporterID):
-    print(ReporterID)
+
     if request.method == 'POST':
         reporterName1 = request.POST.get('reporterName1')
         bugType1 = request.POST.get('bugType1')
@@ -54,9 +49,6 @@ def update_record(request,ReporterID):
     
     
 def delete_record(request,ReporterID):
-    print(ReporterID)
-
-
 
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()
@@ -64,32 +56,37 @@ def delete_record(request,ReporterID):
         cursor.execute(query, (ReporterID,))
              
     return redirect('/record')
+def fetch_records_and_count_reporters(request):
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()
+        query = "SELECT ReporterName, COUNT(*) AS Records FROM Form GROUP BY ReporterName"
+        cursor.execute(query)
+        rows = cursor.fetchall()
 
-    
-    # if request.method == 'POST':
-    #     with sqlite3.connect(BASE_DIR / 'data.db') as db:
-    #         cursor = db.cursor()
-    #         query = "DELETE FROM Form WHERE ReporterID = ?"
-    #         cursor.execute(query, (record_id,))
+        # Prepare the data as a list of dictionaries
+        reporter_records = {}
+        for row in rows:
+            reporter_name = row[0]
+            records = row[1]
+            if reporter_name not in reporter_records:
+                reporter_records[reporter_name] = records
+            else:
+                reporter_records[reporter_name] += records
+        # print(reporter_records)
+        
+        # Calculate the total number of records
+        total_records = sum(reporter_records.values())
 
-    #     return redirect('record')
+        # Calculate the progress for each reporter
+        record = []
+        for reporter_name, records in reporter_records.items():
+            progress = (records / total_records) * 100
+            record.append({'name': reporter_name, 'progress': progress})
 
-    # else:
-    #     with sqlite3.connect(BASE_DIR / 'data.db') as db:
-    #         cursor = db.cursor()
-    #         query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail FROM Form"
-    #         cursor.execute(query)
-    #         row = cursor.fetchall()
-    #         column_names = [description[0] for description in cursor.description]
-
-    #     record = []
-    #     for row in row:
-    #         r = dict(zip(column_names, row))
-    #         record.append(r)
-
-    #     return render(request, 'record.html', {'record': record})
+    return render(request, 'record.html', {'record': record})
 
 def record(request):
+    
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()
         query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail FROM Form"
@@ -102,13 +99,11 @@ def record(request):
         for row in row:
             r = dict(zip(column_names, row))
             record.append(r)
-        
-        # print(status)
-
-        
-
     
     return render(request,'record.html',{'record':record})
+
+
+
 @csrf_exempt
 def saveform(request):
     if request.method == 'POST':
@@ -138,3 +133,5 @@ def saveform(request):
             cursor.execute(query, values)
 
     return render(request, 'addBug.html')
+
+
