@@ -4,6 +4,7 @@ import sqlite3
 from collections import Counter
 from pathlib import Path
 
+import random,string
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -56,39 +57,45 @@ def delete_record(request,ReporterID):
         cursor.execute(query, (ReporterID,))
              
     return redirect('/record')
-def fetch_records_and_count_reporters(request):
-    with sqlite3.connect(BASE_DIR / 'data.db') as db:
-        cursor = db.cursor()
-        query = "SELECT ReporterName, COUNT(*) AS Records FROM Form GROUP BY ReporterName"
-        cursor.execute(query)
-        rows = cursor.fetchall()
 
-        # Prepare the data as a list of dictionaries
-        reporter_records = {}
-        for row in rows:
-            reporter_name = row[0]
-            records = row[1]
-            if reporter_name not in reporter_records:
-                reporter_records[reporter_name] = records
-            else:
-                reporter_records[reporter_name] += records
-        # print(reporter_records)
+
+# def fetch_records(request):
+#     with sqlite3.connect(BASE_DIR / 'data.db') as db:
+#         cursor = db.cursor()
+#         query = "SELECT ReporterName, COUNT(*) AS Records FROM Form GROUP BY ReporterName"
+#         cursor.execute(query)
+#         rows = cursor.fetchall()
+
+#         # Prepare the data as a list of dictionaries
+#         reporter_records = {}
+#         for row in rows:
+#             reporter_name = row[0]
+#             records = row[1]
+#             if reporter_name not in reporter_records:
+#                 reporter_records[reporter_name] = records
+#             else:
+#                 reporter_records[reporter_name] += records
+#         # print(reporter_records)
         
-        # Calculate the total number of records
-        total_records = sum(reporter_records.values())
+#         # Calculate the total number of records
+#         total_records = sum(reporter_records.values())
 
-        # Calculate the progress for each reporter
-        record = []
-        for reporter_name, records in reporter_records.items():
-            progress = (records / total_records) * 100
-            record.append({'name': reporter_name, 'progress': progress})
+#         # Calculate the progress for each reporter
+#         record = []
+#         for reporter_name, records in reporter_records.items():
+#             progress = (records / total_records) * 100
+#             record.append({'name': reporter_name, 'progress': progress})
 
-    return render(request, 'record.html', {'record': record})
+#     return render(request, 'record.html', {'record': record})
 
 def record(request):
     
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()
+        
+        cursor1=db.cursor()
+        cursor2=db.cursor()
+
         query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail FROM Form"
         cursor.execute(query)
         row = cursor.fetchall()
@@ -99,8 +106,39 @@ def record(request):
         for row in row:
             r = dict(zip(column_names, row))
             record.append(r)
+            
+            
+        query1 = "SELECT DISTINCT ReporterName FROM Form"
+        cursor1.execute(query1)
+        row1 = cursor1.fetchall()
+        column_names1 = [description[0] for description in cursor.description]
+
+            # Prepare the data as a list of dictionaries
+        record1 = []
+        for row in row1:
+            r = dict(zip(column_names1, row))
+            record1.append(r)
+            
+            
+        query2 = "SELECT ReporterName, COUNT(*) AS Records FROM Form GROUP BY ReporterName"
+        cursor2.execute(query2)
+        
+        row2 = cursor2.fetchall()
+        print(row2)
+        column_names2 = [description[0] for description in cursor2.description]
+
+        record2 = []
+        for row in row2:
+            r = dict(zip(column_names2, row))
+            record2.append(r)
+
+
+           
+        
+        
+            
     
-    return render(request,'record.html',{'record':record})
+    return render(request,'record.html',{'record':record,'record1':record1,'record2':record2})
 
 
 
