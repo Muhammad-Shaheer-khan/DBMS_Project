@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import sqlite3
 from django.http import JsonResponse
-from .models import Reporter, BugType, SiteName, OwnerName
 from pathlib import Path
 from django.http import HttpResponseBadRequest, HttpResponse
 from pathlib import Path
+from django.db import connection
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -138,28 +138,49 @@ def saveform(request):
 
     return render(request, 'addBug.html')
 
-
-
-
 def email(request):
-    reporters = Reporter.objects.all()
-    return render(request, 'email.html', {'reporters': reporters})
+    # with connection.cursor() as cursor:
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()    
+        # cursor.execute("SELECT DISTINCT ReporterID, ReporterName FROM Form")
+        cursor.execute("SELECT ReporterID, ReporterName FROM Form")
+        reporters = cursor.fetchall()
+        dict = {'reporters': reporters}
+        # print(dict.items())
+    return render(request, 'email.html', dict)
 
 def fetch_bug_types(request):
-    reporter_id = request.GET.get('reporter')
-    bug_types = BugType.objects.filter(reporter_id=reporter_id).values_list('name', flat=True)
-    return JsonResponse({'bug_types': list(bug_types)})
+    reporterName = request.GET.get('reporter')
+    print(reporterName)
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()
+        # cursor.execute("SELECT DISTINCT BugType FROM Form WHERE ReporterID = %s", [reporter_id])
+        cursor.execute("SELECT BugType FROM Form WHERE ReporterName = ?", (reporterName,))
+        bug_types = cursor.fetchall()
+        # print(bug_types)
+    return JsonResponse({'bug_types': bug_types})
 
 def fetch_site_names(request):
-    reporter_id = request.GET.get('reporter')
+    reporterName = request.GET.get('reporterName')
     bug_type = request.GET.get('bug_type')
-    site_names = SiteName.objects.filter(reporter_id=reporter_id, bug_type=bug_type).values_list('name', flat=True)
-    return JsonResponse({'site_names': list(site_names)})
+    print(reporterName, bug_type)
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT SiteName FROM Form WHERE ReporterName = ? AND BugType = ?", (reporterName, bug_type))
+        site_names = cursor.fetchall()
+        # print(site_names)
+    return JsonResponse({'site_names': site_names})
 
-def fetch_owner_names(request):
-    reporter_id = request.GET.get('reporter')
+def fetch_owner_email(request):
+    print("inside the owner email")
+    reporterName = request.GET.get('reporter')
     bug_type = request.GET.get('bug_type')
     site_name = request.GET.get('site_name')
-    owner_names = OwnerName.objects.filter(reporter_id=reporter_id, bug_type=bug_type, site_name=site_name).values_list('name', flat=True)
-    owner_email = OwnerName.objects.filter(reporter_id=reporter_id, bug_type=bug_type, site_name=site_name).values_list('email', flat=True).first()
-    return JsonResponse({'owner_names': list(owner_names), 'owner_email': owner_email})
+    print(reporterName, site_name)
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT DISTINCT OwnerEmail FROM Form WHERE ReporterName = ? AND BugType = ? AND SiteName = ?", (reporterName, bug_type, site_name))
+        # owner_names = cursor.fetchall()
+        owner_email = cursor.fetchone()
+        print(owner_email)
+    return JsonResponse({'owner_email': owner_email})
