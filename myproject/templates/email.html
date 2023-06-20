@@ -6,6 +6,8 @@
     <title>Bug Report</title>
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
@@ -31,6 +33,7 @@
             color: #ffffff;
             border: none;
             padding: 10px 20px;
+            width: 80;
             font-size: 16px;
             cursor: pointer;
         }
@@ -46,49 +49,17 @@
         .form-control {
             border-radius: 4px;
         }
+.button-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+}
 
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #212529;
-            border-collapse: collapse;
-        }
+.button-container button {
+    padding: 15px;
+    border-radius: 20%;
+}
 
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-        }
-
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .table tbody + tbody {
-            border-top: 2px solid #dee2e6;
-        }
-
-        .table .table {
-            background-color: #ffffff;
-        }
-
-        .table-sm th,
-        .table-sm td {
-            padding: 0.3rem;
-        }
-
-        .progress {
-            height: 25px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-        }
-
-        .progress-bar {
-            background-color: #007bff;
-            border-radius: 4px;
-        }
     </style>
 </head>
 
@@ -130,6 +101,29 @@
             <input type="email" class="form-control" id="owner_email" name="owner_email" readonly>
         </div>
         
+        <div class="form-group">
+            <label for="subject">Subject:</label>
+            <input type="text" class="form-control" id="subject" name="subject" required>
+        </div>
+
+        <div class="form-group">
+            <label for="message">Message:</label>
+            <div class="input-group">
+                <textarea class="form-control" id="message" name="message" rows="4" cols="50" required></textarea>
+            </div>
+            <div class="button-container">
+                <button class="btn btn-primary btn-icon" id="send-email-button">
+                    <i class="fas fa-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+               
+        
+        
+          
+        </form>
+        
         <script>
             $(document).ready(function() {
                 $('#reporter').change(function() {
@@ -155,18 +149,18 @@
                 });
         
                 $('#bug_type').change(function() {
-                    var reporterName = $('#reporter').find('option:selected').text(); // Use reporterName instead of reporterId
+                    var reporterName = $('#reporter').find('option:selected').text();
                     var bugType = $(this).val();
                     if (reporterName && bugType) {
-                      $.ajax({
-                        url: '/fetch-site-names/',
-                        data: {'reporterName': reporterName, 'bug_type': bugType}, // Use 'reporterName' instead of 'reporter'
-                        dataType: 'json',
-                        success: function(data) {
-                          $('#site_name').empty().append('<option value="">Select Site Name</option>');
-                          $.each(data.site_names, function(index, siteName) {
-                            $('#site_name').append('<option value="' + siteName + '">' + siteName + '</option>');
-                          });
+                        $.ajax({
+                            url: '/fetch-site-names/',
+                            data: {'reporterName': reporterName, 'bug_type': bugType},
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#site_name').empty().append('<option value="">Select Site Name</option>');
+                                $.each(data.site_names, function(index, siteName) {
+                                    $('#site_name').append('<option value="' + siteName + '">' + siteName + '</option>');
+                                });
                             }
                         });
                     } else {
@@ -196,6 +190,33 @@
                     } else {
                         $('#owner_name').empty().append('<option value="">Select Owner Name</option>');
                         $('#owner_email').val('');
+                    }
+                });
+        
+                $('#send-email-button').click(function(event) {
+                    event.preventDefault();
+        
+                    var ownerEmail = $('#owner_email').val();
+                    var subject = $('#subject').val();
+                    var message = $('#message').val();
+        
+                    if (ownerEmail && subject && message) {
+                        $.ajax({
+                            url: '/send-email/',
+                            method: 'POST',
+                            data: {
+                                'owner_email': ownerEmail,
+                                'subject': subject,
+                                'message': message
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log('Success:', data);
+                            },
+                            error: function(xhr, status, error) {
+                                console.log('Error:', xhr.responseText);
+                            }
+                        });
                     }
                 });
             });

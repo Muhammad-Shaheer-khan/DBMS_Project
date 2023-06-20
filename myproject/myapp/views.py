@@ -4,8 +4,7 @@ import sqlite3
 from django.http import JsonResponse
 from pathlib import Path
 from django.http import HttpResponseBadRequest, HttpResponse
-from pathlib import Path
-from django.db import connection
+from django.core.mail import send_mail
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -184,3 +183,19 @@ def fetch_owner_email(request):
         owner_email = cursor.fetchone()
         print(owner_email)
     return JsonResponse({'owner_email': owner_email})
+
+@csrf_exempt
+def send_email(request):
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        owner_email = request.POST.get('owner_email')
+
+        # Send the email
+        send_mail(subject, message, 'streetboys9191@gmail.com', [owner_email])
+
+        # Return a JSON response indicating success
+        return JsonResponse({'message': 'Email sent successfully.'})
+    else:
+        # Return an error response if the request method is not POST
+        return JsonResponse({'error': 'Invalid request method.'})
