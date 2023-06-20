@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import sqlite3
-from collections import Counter
+from django.http import JsonResponse
+from .models import Reporter, BugType, SiteName, OwnerName
+from pathlib import Path
+from django.http import HttpResponseBadRequest, HttpResponse
 from pathlib import Path
 
-import random,string
-from pathlib import Path
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def home(request):
@@ -18,6 +20,9 @@ def home(request):
 def addBug(request):
     return render(request,'addBug.html')
 
+
+def email(request):
+    return render(request,'email.html')
 
 @csrf_exempt
 def update_record(request,ReporterID):
@@ -32,7 +37,6 @@ def update_record(request,ReporterID):
         
         with sqlite3.connect(BASE_DIR/'data.db') as db:
             cursor=db.cursor()
-            # Update the patient information in the database
             query = """
                 UPDATE Form
                 SET ReporterName = ?,
@@ -57,36 +61,6 @@ def delete_record(request,ReporterID):
         cursor.execute(query, (ReporterID,))
              
     return redirect('/record')
-
-
-# def fetch_records(request):
-#     with sqlite3.connect(BASE_DIR / 'data.db') as db:
-#         cursor = db.cursor()
-#         query = "SELECT ReporterName, COUNT(*) AS Records FROM Form GROUP BY ReporterName"
-#         cursor.execute(query)
-#         rows = cursor.fetchall()
-
-#         # Prepare the data as a list of dictionaries
-#         reporter_records = {}
-#         for row in rows:
-#             reporter_name = row[0]
-#             records = row[1]
-#             if reporter_name not in reporter_records:
-#                 reporter_records[reporter_name] = records
-#             else:
-#                 reporter_records[reporter_name] += records
-#         # print(reporter_records)
-        
-#         # Calculate the total number of records
-#         total_records = sum(reporter_records.values())
-
-#         # Calculate the progress for each reporter
-#         record = []
-#         for reporter_name, records in reporter_records.items():
-#             progress = (records / total_records) * 100
-#             record.append({'name': reporter_name, 'progress': progress})
-
-#     return render(request, 'record.html', {'record': record})
 
 def record(request):
     
@@ -131,15 +105,7 @@ def record(request):
         for row in row2:
             r = dict(zip(column_names2, row))
             record2.append(r)
-
-
-           
-        
-        
-            
-    
     return render(request,'record.html',{'record':record,'record1':record1,'record2':record2})
-
 
 
 @csrf_exempt
@@ -173,3 +139,27 @@ def saveform(request):
     return render(request, 'addBug.html')
 
 
+
+
+def email(request):
+    reporters = Reporter.objects.all()
+    return render(request, 'email.html', {'reporters': reporters})
+
+def fetch_bug_types(request):
+    reporter_id = request.GET.get('reporter')
+    bug_types = BugType.objects.filter(reporter_id=reporter_id).values_list('name', flat=True)
+    return JsonResponse({'bug_types': list(bug_types)})
+
+def fetch_site_names(request):
+    reporter_id = request.GET.get('reporter')
+    bug_type = request.GET.get('bug_type')
+    site_names = SiteName.objects.filter(reporter_id=reporter_id, bug_type=bug_type).values_list('name', flat=True)
+    return JsonResponse({'site_names': list(site_names)})
+
+def fetch_owner_names(request):
+    reporter_id = request.GET.get('reporter')
+    bug_type = request.GET.get('bug_type')
+    site_name = request.GET.get('site_name')
+    owner_names = OwnerName.objects.filter(reporter_id=reporter_id, bug_type=bug_type, site_name=site_name).values_list('name', flat=True)
+    owner_email = OwnerName.objects.filter(reporter_id=reporter_id, bug_type=bug_type, site_name=site_name).values_list('email', flat=True).first()
+    return JsonResponse({'owner_names': list(owner_names), 'owner_email': owner_email})

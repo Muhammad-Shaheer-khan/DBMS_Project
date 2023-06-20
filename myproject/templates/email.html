@@ -1,0 +1,208 @@
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bug Report</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS for the blue and white theme */
+        body {
+            background-color: #f5f5f5;
+            color: #333333;
+        }
+
+        .container {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: #000000;
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .form-control {
+            border-radius: 4px;
+        }
+
+        .table {
+            width: 100%;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table thead th {
+            vertical-align: bottom;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .table tbody + tbody {
+            border-top: 2px solid #dee2e6;
+        }
+
+        .table .table {
+            background-color: #ffffff;
+        }
+
+        .table-sm th,
+        .table-sm td {
+            padding: 0.3rem;
+        }
+
+        .progress {
+            height: 25px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+        }
+
+        .progress-bar {
+            background-color: #007bff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<br><br>
+<br><br>
+<br><br>
+
+<div class="container">
+    <h1>Bug Report</h1>
+
+    <form action="/send-email" method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="reporter">Reporter:</label>
+            <select class="form-control" id="reporter" name="reporter">
+                <option value="">Select Reporter</option>
+                {% for reporter in reporters %}
+                <option value="{{ reporter.id }}">{{ reporter.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="bug_type">Bug Type:</label>
+            <select class="form-control" id="bug_type" name="bug_type">
+                <option value="">Select Bug Type</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="site_name">Site Name:</label>
+            <select class="form-control" id="site_name" name="site_name">
+                <option value="">Select Site Name</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="owner_name">Owner Name:</label>
+            <select class="form-control" id="owner_name" name="owner_name">
+                <option value="">Select Owner Name</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="owner_email">Owner Email:</label>
+            <input type="email" class="form-control" id="owner_email" name="owner_email" readonly>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $('#reporter').change(function() {
+                    var reporterId = $(this).val();
+                    if (reporterId) {
+                        $.ajax({
+                            url: '/fetch-bug-types/',
+                            data: {'reporter': reporterId},
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#bug_type').empty().append('<option value="">Select Bug Type</option>');
+                                $.each(data.bug_types, function(index, bugType) {
+                                    $('#bug_type').append('<option value="' + bugType + '">' + bugType + '</option>');
+                                });
+                            }
+                        });
+                    } else {
+                        $('#bug_type').empty().append('<option value="">Select Bug Type</option>');
+                        $('#site_name').empty().append('<option value="">Select Site Name</option>');
+                        $('#owner_name').empty().append('<option value="">Select Owner Name</option>');
+                        $('#owner_email').val('');
+                    }
+                });
+        
+                $('#bug_type').change(function() {
+                    var reporterId = $('#reporter').val();
+                    var bugType = $(this).val();
+                    if (reporterId && bugType) {
+                        $.ajax({
+                            url: '/fetch-site-names/',
+                            data: {'reporter': reporterId, 'bug_type': bugType},
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#site_name').empty().append('<option value="">Select Site Name</option>');
+                                $.each(data.site_names, function(index, siteName) {
+                                    $('#site_name').append('<option value="' + siteName + '">' + siteName + '</option>');
+                                });
+                            }
+                        });
+                    } else {
+                        $('#site_name').empty().append('<option value="">Select Site Name</option>');
+                        $('#owner_name').empty().append('<option value="">Select Owner Name</option>');
+                        $('#owner_email').val('');
+                    }
+                });
+        
+                $('#site_name').change(function() {
+                    var reporterId = $('#reporter').val();
+                    var bugType = $('#bug_type').val();
+                    var siteName = $(this).val();
+                    if (reporterId && bugType && siteName) {
+                        $.ajax({
+                            url: '/fetch-owner-names/',
+                            data: {'reporter': reporterId, 'bug_type': bugType, 'site_name': siteName},
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#owner_name').empty().append('<option value="">Select Owner Name</option>');
+                                $.each(data.owner_names, function(index, ownerName) {
+                                    $('#owner_name').append('<option value="' + ownerName + '">' + ownerName + '</option>');
+                                });
+                                $('#owner_email').val(data.owner_email);
+                            }
+                        });
+                    } else {
+                        $('#owner_name').empty().append('<option value="">Select Owner Name</option>');
+                        $('#owner_email').val('');
+                    }
+                });
+            });
+        </script>
+        
