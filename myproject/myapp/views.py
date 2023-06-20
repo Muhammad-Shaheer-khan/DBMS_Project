@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import sqlite3
 from django.http import JsonResponse
-from .models import Reporter, BugType, SiteName, OwnerName
 from pathlib import Path
 from django.http import HttpResponseBadRequest, HttpResponse
 from pathlib import Path

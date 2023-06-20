@@ -102,9 +102,7 @@
             <label for="reporter">Reporter:</label>
             <select class="form-control" id="reporter" name="reporter">
                 <option value="">Select Reporter</option>
-                {% for reporter in reporters %}
                 <option value="{{ reporter.id }}">{{ reporter.name }}</option>
-                {% endfor %}
             </select>
         </div>
         
