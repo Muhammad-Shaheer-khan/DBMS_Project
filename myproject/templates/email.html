@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bug Report</title>
+    
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <style>
         /* Custom CSS for the blue and white theme */
         body {
@@ -102,7 +105,11 @@
             <label for="reporter">Reporter:</label>
             <select class="form-control" id="reporter" name="reporter">
                 <option value="">Select Reporter</option>
-                <option value="{{ reporter.id }}">{{ reporter.name }}</option>
+
+                {% for reporter in reporters %}
+                <option value="{{ reporter.0 }}">{{ reporter.1 }}</option>
+                {% endfor %}
+>>>>>>> 63d708b8a50d75dbb24f1e39d727dd873997778e
             </select>
         </div>
         
@@ -121,26 +128,18 @@
         </div>
         
         <div class="form-group">
-            <label for="owner_name">Owner Name:</label>
-            <select class="form-control" id="owner_name" name="owner_name">
-                <option value="">Select Owner Name</option>
-            </select>
-        </div>
-        
-        <div class="form-group">
             <label for="owner_email">Owner Email:</label>
             <input type="email" class="form-control" id="owner_email" name="owner_email" readonly>
         </div>
         
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             $(document).ready(function() {
                 $('#reporter').change(function() {
-                    var reporterId = $(this).val();
-                    if (reporterId) {
+                    var reporterName = $(this).find('option:selected').text();
+                    if (reporterName) {
                         $.ajax({
                             url: '/fetch-bug-types/',
-                            data: {'reporter': reporterId},
+                            data: {'reporter': reporterName},
                             dataType: 'json',
                             success: function(data) {
                                 $('#bug_type').empty().append('<option value="">Select Bug Type</option>');
@@ -158,18 +157,18 @@
                 });
         
                 $('#bug_type').change(function() {
-                    var reporterId = $('#reporter').val();
+                    var reporterName = $('#reporter').find('option:selected').text(); // Use reporterName instead of reporterId
                     var bugType = $(this).val();
-                    if (reporterId && bugType) {
-                        $.ajax({
-                            url: '/fetch-site-names/',
-                            data: {'reporter': reporterId, 'bug_type': bugType},
-                            dataType: 'json',
-                            success: function(data) {
-                                $('#site_name').empty().append('<option value="">Select Site Name</option>');
-                                $.each(data.site_names, function(index, siteName) {
-                                    $('#site_name').append('<option value="' + siteName + '">' + siteName + '</option>');
-                                });
+                    if (reporterName && bugType) {
+                      $.ajax({
+                        url: '/fetch-site-names/',
+                        data: {'reporterName': reporterName, 'bug_type': bugType}, // Use 'reporterName' instead of 'reporter'
+                        dataType: 'json',
+                        success: function(data) {
+                          $('#site_name').empty().append('<option value="">Select Site Name</option>');
+                          $.each(data.site_names, function(index, siteName) {
+                            $('#site_name').append('<option value="' + siteName + '">' + siteName + '</option>');
+                          });
                             }
                         });
                     } else {
@@ -180,13 +179,13 @@
                 });
         
                 $('#site_name').change(function() {
-                    var reporterId = $('#reporter').val();
+                    var reporterName = $('#reporter').find('option:selected').text();
                     var bugType = $('#bug_type').val();
                     var siteName = $(this).val();
-                    if (reporterId && bugType && siteName) {
+                    if (reporterName && bugType && siteName) {
                         $.ajax({
-                            url: '/fetch-owner-names/',
-                            data: {'reporter': reporterId, 'bug_type': bugType, 'site_name': siteName},
+                            url: '/fetch-owner-email/',
+                            data: {'reporter': reporterName, 'bug_type': bugType, 'site_name': siteName},
                             dataType: 'json',
                             success: function(data) {
                                 $('#owner_name').empty().append('<option value="">Select Owner Name</option>');
