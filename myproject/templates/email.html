@@ -5,75 +5,11 @@
 
 {% block content %}
 
-
-<!-- <head> -->
-    <!-- <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bug Report</title>
-    
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
-
-<!-- </head> -->
-
-<!-- 
-<style>
-    /* Custom CSS for the blue and white theme */
-    body {
-        background-color: #f5f5f5;
-        color: #333333;
-    }
-
-    .container {
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #ffffff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1, h2, h3 {
-        color: #000000;
-    }
-
-    .btn {
-        background-color: #007bff;
-        color: #ffffff;
-        border: none;
-        padding: 10px 20px;
-        width: 80;
-        font-size: 16px;
-        cursor: pointer;
-    }
-
-    .btn:hover {
-        background-color: #0056b3;
-    }
-
-    .form-group label {
-        font-weight: bold;
-    }
-
-    .form-control {
-        border-radius: 4px;
-    }
-.button-container {
-display: flex;
-justify-content: flex-end;
-margin-top: 10px;
-}
-
-.button-container button {
-padding: 15px;
-border-radius: 20%;
-}
-
-</style> -->
-
 <br><br>
 <br><br>
 <br><br>
+<div id="alert"></div>
+
 
 <div class="container">
     <h1>Bug Report</h1>
@@ -86,7 +22,7 @@ border-radius: 20%;
                 <option value="">Select Reporter</option>
 
                 {% for reporter in reporters %}
-                <option value="{{ reporter.0 }}">{{ reporter.1 }}</option>
+                <option value="{{ reporter.0 }}">{{ reporter.0}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -121,17 +57,21 @@ border-radius: 20%;
                 <textarea class="form-control" id="message" name="message" rows="4" cols="50" required></textarea>
             </div>
             <div class="button-container my-3">
-                <button class="btn btn-primary btn-icon" id="send-email-button">
+                <button class="btn btn-primary btn-icon" onclick="abc()" id="send-email-button">
                     <i class="fas fa-plane"></i>
                 </button>
             </div>
         </div>
+
         
                
         
         
           
         </form>
+
+
+        
         
         <script>
 
@@ -244,17 +184,41 @@ border-radius: 20%;
                                 var reporterName = $('#reporter').find('option:selected').text();
                                 var bugType = $('#bug_type').val();
                                 var siteName = $('#site_name').val();
+
                             
                                 updateStatus(reporterName, bugType, siteName);
+                                $('#alert').html('<div class="alert alert-success">Mail has been sent successfully.</div>').show();
+                                const displayDuration = 300000000345435345400; // Adjust the duration (in milliseconds) as needed
+
+                                setTimeout(function() {
+
+                                    $('#alert').fadeOut('slow', function() {
+                                    $(this).remove();
+                                     });
+                                   }, displayDuration);
+                                
+
+                       // Reload the page after a delay
+                                setTimeout(function() {
+                                   location.reload();
+                                 }, 10); 
+
                             },
                             
+
                             error: function(xhr, status, error) {
                                 console.log('Error:', xhr.responseText);
+
                             }
                         });
                     }
                 });
             });
+
+            // const abc=()=>{
+            //     $('#alert alert-success').text('Mail has been sent successfully.').show();
+
+            // }
         </script>
         
 {% endblock %}
