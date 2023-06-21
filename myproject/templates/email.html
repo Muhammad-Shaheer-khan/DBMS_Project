@@ -1,96 +1,75 @@
 
+{% extends 'base.html' %}
 
-<head>
-    <meta charset="UTF-8">
+{% load static %}
+
+{% block content %}
+
+
+<!-- <head> -->
+    <!-- <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bug Report</title>
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
 
-    <style>
-        /* Custom CSS for the blue and white theme */
-        body {
-            background-color: #f5f5f5;
-            color: #333333;
-        }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 
-        .container {
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+<!-- </head> -->
 
-        h1, h2, h3 {
-            color: #000000;
-        }
+<!-- 
+<style>
+    /* Custom CSS for the blue and white theme */
+    body {
+        background-color: #f5f5f5;
+        color: #333333;
+    }
 
-        .btn {
-            background-color: #007bff;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+    .container {
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
+    h1, h2, h3 {
+        color: #000000;
+    }
 
-        .form-group label {
-            font-weight: bold;
-        }
+    .btn {
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        width: 80;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-        .form-control {
-            border-radius: 4px;
-        }
+    .btn:hover {
+        background-color: #0056b3;
+    }
 
-        .table {
-            width: 100%;
-            margin-bottom: 1rem;
-            color: #212529;
-            border-collapse: collapse;
-        }
+    .form-group label {
+        font-weight: bold;
+    }
 
-        .table th,
-        .table td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-        }
+    .form-control {
+        border-radius: 4px;
+    }
+.button-container {
+display: flex;
+justify-content: flex-end;
+margin-top: 10px;
+}
 
-        .table thead th {
-            vertical-align: bottom;
-            border-bottom: 2px solid #dee2e6;
-        }
+.button-container button {
+padding: 15px;
+border-radius: 20%;
+}
 
-        .table tbody + tbody {
-            border-top: 2px solid #dee2e6;
-        }
-
-        .table .table {
-            background-color: #ffffff;
-        }
-
-        .table-sm th,
-        .table-sm td {
-            padding: 0.3rem;
-        }
-
-        .progress {
-            height: 25px;
-            background-color: #e9ecef;
-            border-radius: 4px;
-        }
-
-        .progress-bar {
-            background-color: #007bff;
-            border-radius: 4px;
-        }
-    </style>
-</head>
+</style> -->
 
 <br><br>
 <br><br>
@@ -101,36 +80,58 @@
 
     <form action="/send-email" method="POST">
         {% csrf_token %}
-        <div class="form-group">
+        <div class="form-group my-3">
             <label for="reporter">Reporter:</label>
-            <select class="form-control" id="reporter" name="reporter">
+            <select class="form-control my-2" id="reporter" name="reporter">
                 <option value="">Select Reporter</option>
 
                 {% for reporter in reporters %}
                 <option value="{{ reporter.0 }}">{{ reporter.1 }}</option>
                 {% endfor %}
->>>>>>> 63d708b8a50d75dbb24f1e39d727dd873997778e
             </select>
         </div>
         
         <div class="form-group">
             <label for="bug_type">Bug Type:</label>
-            <select class="form-control" id="bug_type" name="bug_type">
+            <select class="form-control my-2" id="bug_type" name="bug_type">
                 <option value="">Select Bug Type</option>
             </select>
         </div>
         
         <div class="form-group">
             <label for="site_name">Site Name:</label>
-            <select class="form-control" id="site_name" name="site_name">
+            <select class="form-control my-2" id="site_name" name="site_name">
                 <option value="">Select Site Name</option>
             </select>
         </div>
         
         <div class="form-group">
-            <label for="owner_email">Owner Email:</label>
+            <label class="email my-2" for="owner_email my-2">Owner Email:</label>
             <input type="email" class="form-control" id="owner_email" name="owner_email" readonly>
         </div>
+        
+        <div class="form-group">
+            <label class='subject my-2' for="subject">Subject:</label>
+            <input type="text" class="form-control" id="subject" name="subject" required>
+        </div>
+
+        <div class="form-group my-2">
+            <label for="message">Message:</label>
+            <div class="input-group my-2">
+                <textarea class="form-control" id="message" name="message" rows="4" cols="50" required></textarea>
+            </div>
+            <div class="button-container my-3">
+                <button class="btn btn-primary btn-icon" id="send-email-button">
+                    <i class="fas fa-plane"></i>
+                </button>
+            </div>
+        </div>
+        
+               
+        
+        
+          
+        </form>
         
         <script>
             $(document).ready(function() {
@@ -157,18 +158,18 @@
                 });
         
                 $('#bug_type').change(function() {
-                    var reporterName = $('#reporter').find('option:selected').text(); // Use reporterName instead of reporterId
+                    var reporterName = $('#reporter').find('option:selected').text();
                     var bugType = $(this).val();
                     if (reporterName && bugType) {
-                      $.ajax({
-                        url: '/fetch-site-names/',
-                        data: {'reporterName': reporterName, 'bug_type': bugType}, // Use 'reporterName' instead of 'reporter'
-                        dataType: 'json',
-                        success: function(data) {
-                          $('#site_name').empty().append('<option value="">Select Site Name</option>');
-                          $.each(data.site_names, function(index, siteName) {
-                            $('#site_name').append('<option value="' + siteName + '">' + siteName + '</option>');
-                          });
+                        $.ajax({
+                            url: '/fetch-site-names/',
+                            data: {'reporterName': reporterName, 'bug_type': bugType},
+                            dataType: 'json',
+                            success: function(data) {
+                                $('#site_name').empty().append('<option value="">Select Site Name</option>');
+                                $.each(data.site_names, function(index, siteName) {
+                                    $('#site_name').append('<option value="' + siteName + '">' + siteName + '</option>');
+                                });
                             }
                         });
                     } else {
@@ -200,6 +201,34 @@
                         $('#owner_email').val('');
                     }
                 });
+        
+                $('#send-email-button').click(function(event) {
+                    event.preventDefault();
+        
+                    var ownerEmail = $('#owner_email').val();
+                    var subject = $('#subject').val();
+                    var message = $('#message').val();
+        
+                    if (ownerEmail && subject && message) {
+                        $.ajax({
+                            url: '/send-email/',
+                            method: 'POST',
+                            data: {
+                                'owner_email': ownerEmail,
+                                'subject': subject,
+                                'message': message
+                            },
+                            dataType: 'json',
+                            success: function(data) {
+                                console.log('Success:', data);
+                            },
+                            error: function(xhr, status, error) {
+                                console.log('Error:', xhr.responseText);
+                            }
+                        });
+                    }
+                });
             });
         </script>
         
+{% endblock %}
