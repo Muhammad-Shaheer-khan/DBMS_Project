@@ -76,7 +76,7 @@
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
                             <li class="scroll-to-section{% if request.path == '#top' or request.path == '/' %} active{% endif %}">
-                                <a href="#top">Home</a>
+                                <a href={% url 'home' %}>Home</a>
                             </li>
                             <li class="scroll-to-section{% if request.path == '#blog' %} active{% endif %}">
                                 <a href="#blog">Blog</a>

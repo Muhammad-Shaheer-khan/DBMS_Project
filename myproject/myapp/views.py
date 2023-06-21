@@ -61,8 +61,29 @@ def delete_record(request,ReporterID):
              
     return redirect('/record')
 
+
+def get_counts(request):
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()
+        cursor.execute("SELECT COUNT(DISTINCT ReporterName) FROM Form")
+        reporter_count = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) FROM Form")
+        bugs_count = cursor.fetchone()[0]
+        cursor.execute("SELECT COUNT(*) FROM Form WHERE status = 'Reported'")
+        reported_count = cursor.fetchone()[0]
+
+    counts = {
+        'reporter_count': reporter_count,
+        'bugs_count': bugs_count,
+        'reported_count': reported_count,
+    }
+
+    return JsonResponse(counts)
+
+
 def record(request):
-    
+    # context = get_counts(request)
+    # print("here",context)
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()
         
@@ -97,14 +118,15 @@ def record(request):
         cursor2.execute(query2)
         
         row2 = cursor2.fetchall()
-        print(row2)
+        # print(row2)
         column_names2 = [description[0] for description in cursor2.description]
 
         record2 = []
         for row in row2:
             r = dict(zip(column_names2, row))
             record2.append(r)
-    return render(request,'record.html',{'record':record,'record1':record1,'record2':record2})
+    # print(context[0])
+    return render(request,'record.html',{'record':record,'record1':record1,'record2':record2 })
 
 
 @csrf_exempt
