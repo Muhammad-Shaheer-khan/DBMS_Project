@@ -134,6 +134,27 @@ border-radius: 20%;
         </form>
         
         <script>
+
+            function updateStatus(reporterName, bugType, siteName) {
+                $.ajax({
+                    url: '/update-status/',  // Replace with the appropriate URL or endpoint
+                    method: 'POST',
+                    data: {
+                        'reporter_name': reporterName,
+                        'bug_type': bugType,
+                        'site_name': siteName
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        // Handle success response of update_status function
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle error response of update_status function
+                    }
+                });
+            }
+            
+
             $(document).ready(function() {
                 $('#reporter').change(function() {
                     var reporterName = $(this).find('option:selected').text();
@@ -220,8 +241,13 @@ border-radius: 20%;
                             },
                             dataType: 'json',
                             success: function(data) {
-                                console.log('Success:', data);
+                                var reporterName = $('#reporter').find('option:selected').text();
+                                var bugType = $('#bug_type').val();
+                                var siteName = $('#site_name').val();
+                            
+                                updateStatus(reporterName, bugType, siteName);
                             },
+                            
                             error: function(xhr, status, error) {
                                 console.log('Error:', xhr.responseText);
                             }

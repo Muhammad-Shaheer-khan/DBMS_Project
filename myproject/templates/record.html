@@ -266,7 +266,7 @@
           <td>{{ i.ReporterName }}</td>
           <td>{{ i.BugType }}</td>
           <td>{{ i.OwnerEmail }}</td>
-          <td>dsfsd</td>
+          <td>{{i.status}}</td>
           <td>
             <div class="highlight-icon">
               <a href="#" class="more-detail-button" data-target="#moreDetailModal{{ i.ReporterID }}" style="color:#000000;">
@@ -364,6 +364,10 @@
                 </button>
               </div>
               <div class="modal-body">
+                <div class="highlighted-text">
+                  <p><strong>Site Name:</strong></p>
+                  <p class="site_name"><b>{{ i.SiteName }}</b></p>
+                </div>
                 <div class="highlighted-text">
                   <p><strong>Reason:</strong></p>
                   <p class="reason black-text"><b>{{ i.Reason }}</b></p>
