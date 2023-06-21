@@ -145,6 +145,7 @@ def email(request):
         cursor.execute("SELECT ReporterID, ReporterName FROM Form")
         reporters = cursor.fetchall()
         dict = {'reporters': reporters}
+        print(dict.items())
         # print(dict.items())
     return render(request, 'email.html', dict)
 
