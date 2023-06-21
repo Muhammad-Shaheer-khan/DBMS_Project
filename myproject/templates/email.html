@@ -8,6 +8,8 @@
 <br><br>
 <br><br>
 <br><br>
+<div id="alert"></div>
+
 
 <div class="container">
     <h1>Bug Report</h1>
@@ -180,7 +182,23 @@
                                 var siteName = $('#site_name').val();
                             
                                 updateStatus(reporterName, bugType, siteName);
+                                $('#alert').html('<div class="alert alert-success">Mail has been sent successfully.</div>').show();
+                               const displayDuration = 300000000345435345400300000000345435345400; // Adjust the duration (in milliseconds) as needed 
+
+                                setTimeout(function() {
+
+                                    $('#alert').fadeOut('slow', function() {
+                                    $(this).remove();
+                                     });
+                                   }, displayDuration);
+                                
+
+                       // Reload the page after a delay
+                                setTimeout(function() {
+                                   location.reload();
+                                 }, 10);
                             },
+
                             
                             error: function(xhr, status, error) {
                                 console.log('Error:', xhr.responseText);
