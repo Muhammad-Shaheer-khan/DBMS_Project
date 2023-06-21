@@ -139,14 +139,17 @@ def saveform(request):
     return render(request, 'addBug.html')
 
 def email(request):
+    
     # with connection.cursor() as cursor:
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()    
         # cursor.execute("SELECT DISTINCT ReporterID, ReporterName FROM Form")
-        cursor.execute("SELECT ReporterID, ReporterName FROM Form")
+        cursor.execute("SELECT DISTINCT ReporterName FROM Form WHERE status in ('Not reported')")
+
         reporters = cursor.fetchall()
+        print("here",reporters)
         dict = {'reporters': reporters}
-        # print(dict.items())
+        print(dict.items())
     return render(request, 'email.html', dict)
 
 def fetch_bug_types(request):
@@ -155,7 +158,7 @@ def fetch_bug_types(request):
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()
         # cursor.execute("SELECT DISTINCT BugType FROM Form WHERE ReporterID = %s", [reporter_id])
-        cursor.execute("SELECT BugType FROM Form WHERE ReporterName = ?", (reporterName,))
+        cursor.execute("SELECT DISTINCT BugType FROM Form WHERE ReporterName = ?", (reporterName,))
         bug_types = cursor.fetchall()
         # print(bug_types)
     return JsonResponse({'bug_types': bug_types})
@@ -166,7 +169,7 @@ def fetch_site_names(request):
     # print(reporterName, bug_type)
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()
-        cursor.execute("SELECT SiteName FROM Form WHERE ReporterName = ? AND BugType = ?", (reporterName, bug_type))
+        cursor.execute("SELECT DISTINCT SiteName FROM Form WHERE ReporterName = ? AND BugType = ?", (reporterName, bug_type))
         site_names = cursor.fetchall()
         # print(site_names)
     return JsonResponse({'site_names': site_names})
