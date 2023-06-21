@@ -69,7 +69,7 @@ def record(request):
         cursor1=db.cursor()
         cursor2=db.cursor()
 
-        query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail, status FROM Form"
+        query = """SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail, 'status' FROM Form"""
         cursor.execute(query)
         row = cursor.fetchall()
         column_names = [description[0] for description in cursor.description]
@@ -132,7 +132,7 @@ def saveform(request):
             else:
                 new_id = "0001"  # If there are no existing records, start with 0001
 
-            query = "INSERT INTO Form (ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            query = """INSERT INTO Form (ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail, 'status') VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
             values = (new_id, reporterName, bugType, reason, siteName, siteLink, ownerEmail, status)
             cursor.execute(query, values)
             
