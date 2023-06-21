@@ -69,7 +69,7 @@ def record(request):
         cursor1=db.cursor()
         cursor2=db.cursor()
 
-        query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail FROM Form"
+        query = "SELECT ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail, status FROM Form"
         cursor.execute(query)
         row = cursor.fetchall()
         column_names = [description[0] for description in cursor.description]
@@ -116,6 +116,7 @@ def saveform(request):
         siteName = request.POST.get('siteName')
         siteLink = request.POST.get('siteLink')
         ownerEmail = request.POST.get('ownerEmail')
+        status = "Not reported"
 
         with sqlite3.connect(BASE_DIR / 'data.db') as db:
             cursor = db.cursor()
@@ -131,10 +132,10 @@ def saveform(request):
             else:
                 new_id = "0001"  # If there are no existing records, start with 0001
 
-            query = "INSERT INTO Form (ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail) VALUES (?, ?, ?, ?, ?, ?, ?)"
-            values = (new_id, reporterName, bugType, reason, siteName, siteLink, ownerEmail)
+            query = "INSERT INTO Form (ReporterID, ReporterName, BugType, Reason, SiteName, SiteLink, OwnerEmail, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+            values = (new_id, reporterName, bugType, reason, siteName, siteLink, ownerEmail, status)
             cursor.execute(query, values)
-
+            
     return render(request, 'addBug.html')
 
 def email(request):
@@ -162,7 +163,7 @@ def fetch_bug_types(request):
 def fetch_site_names(request):
     reporterName = request.GET.get('reporterName')
     bug_type = request.GET.get('bug_type')
-    print(reporterName, bug_type)
+    # print(reporterName, bug_type)
     with sqlite3.connect(BASE_DIR / 'data.db') as db:
         cursor = db.cursor()
         cursor.execute("SELECT SiteName FROM Form WHERE ReporterName = ? AND BugType = ?", (reporterName, bug_type))
@@ -199,3 +200,19 @@ def send_email(request):
     else:
         # Return an error response if the request method is not POST
         return JsonResponse({'error': 'Invalid request method.'})
+    
+@csrf_exempt
+def update_status(request):
+    reporter_name = request.POST.get('reporter_name')
+    bug_type = request.POST.get('bug_type')
+    site_name = request.POST.get('site_name')
+
+    print(reporter_name,
+    bug_type,
+    site_name)
+    with sqlite3.connect(BASE_DIR / 'data.db') as db:
+        cursor = db.cursor()
+        cursor.execute("UPDATE Form SET status = 'Reported' WHERE ReporterName = ? AND BugType = ? AND SiteName = ?;", (reporter_name, bug_type, site_name))
+        # site_names = cursor.fetchall()
+        # print(site_names)
+    return JsonResponse({'message': 'Status updated successfully'})

@@ -20,5 +20,5 @@ urlpatterns = [
     path('fetch-site-names/', views.fetch_site_names, name='fetch_site_names'),
     path('fetch-owner-email/', views.fetch_owner_email, name='fetch_owner_email'),
     path('send-email/', views.send_email, name='send_email'),
-
+    path('update-status/', views.update_status, name='update_status'),
 ]
